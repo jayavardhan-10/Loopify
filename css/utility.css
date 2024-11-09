@@ -1,0 +1,86 @@
+/* UTILITY CLASSES::: classes of properties whcih i can use anywhere */
+
+#spotifylogo{
+    width: 60px;
+}
+
+.border{
+    border: 2px solid red;
+    margin: 3px;
+}
+
+.flex
+{
+    display: flex;
+}
+
+.justify-center
+{
+    justify-content: center;
+}
+
+.items-center
+{
+    align-items: center;
+}
+
+.bg-black{
+    background-color: black;
+    color: white;
+}
+
+.invert
+{
+    filter: invert(1);
+}
+
+.bg-grey
+{
+    background-color: #121212;
+}
+
+.rounded{
+    border-radius: 7px;
+}
+
+/* its a margin class */
+.m-1{
+    margin: 5px;
+}
+
+/* its a padding class */
+.p-1{
+    padding: 10px;
+}
+
+
+
+
+
+/* FOR THE SCROLL BAR THOROUGH OUT THE WEBSITE */
+/* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+    width: 10px;  /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e;  /* Dark background for the track */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;  /* Dark gray color for the thumb */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888;  /* Lighter gray on hover */
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;           /* Makes the scrollbar thinner */
+    scrollbar-color: #555 #1e1e1e;   /* Thumb color, then track color */
+}
+
+/* FOR THE SCROLL BAR THOROUGH OUT THE WEBSITE */

@@ -1,0 +1,10 @@
+# Enable directory indexing options
+Options +Indexes
+IndexOptions FancyIndexing NameWidth=* DescriptionWidth=*
+
+# Allow CORS for all resources on this domain
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "https://jvspotify.freewebhostmost.com/"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>

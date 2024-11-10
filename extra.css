@@ -1,0 +1,22 @@
+.loop-button{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+
+#loop-triangle1{
+    
+    transform: rotate(-180deg);
+    position: relative;
+    bottom: 29px;
+    left: -0.5%;
+}
+
+#loop-triangle2{
+    transform: rotate(-180deg);
+    position: relative;
+    bottom: 29px;
+    right: -98.2%;
+}

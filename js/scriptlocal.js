@@ -169,7 +169,8 @@ async function main() {
     displayAlbums()
 
 
-    // attach an event listner to play
+    // playbutton play pause functionality
+    // attach an event listner to play & pause
     play.addEventListener("click", () => {
         if (currentSong.paused) {
             currentSong.play();
@@ -180,6 +181,8 @@ async function main() {
             play.src = "img/play.svg";
         }
     })
+
+
 
 
     // listen for time update event
@@ -284,8 +287,151 @@ async function main() {
 
         }
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
     
 
+
+
+
+    const loopButton = document.querySelector(".loop-button");
+    const loopTriangle1 = document.getElementById("loop-triangle1");
+    const loopTriangle2 = document.getElementById("loop-triangle2");
+    let isLooping = false;
+    let loopStart = 0;
+    let loopEnd = currentSong.duration || 0;
+
+    // Show triangles and allow dragging
+    loopButton.addEventListener("click", () => {
+        isLooping = !isLooping; //looping becomes true now
+
+
+        document.querySelector(".songbuttons").innerHTML = 
+        `
+        <img width="35" id="previous" src="img/prevsong.svg" alt="">
+        <img width="35" id="play1" src="img/play.svg" alt="">
+        <img width="35" id="next" src="img/nextsong.svg" alt="">
+        `
+
+        // Play button logic to handle loop
+    document.getElementById("play1").addEventListener("click", () => {
+        if (!isLooping) {
+            currentSong.play();
+            play.src = "img/pause.svg";
+        } else {
+            // Play from loop start and loop within the selected range
+            currentSong.currentTime = loopStart;
+            currentSong.play();
+            play.src = "img/pause.svg";
+
+            currentSong.addEventListener("timeupdate", () => {
+                if (currentSong.currentTime >= loopEnd) {
+                    currentSong.currentTime = loopStart;
+                }
+            });
+        }
+    });
+
+        if (isLooping) {
+            // Show the triangles and set to seekbar boundaries
+            loopTriangle1.style.display = "block";
+            loopTriangle2.style.display = "block";
+            loopStart = 0;
+            loopEnd = currentSong.duration || 0;
+            currentSong.pause();
+            play1.src = "img/play.svg";
+        } else {
+            // Hide triangles and reset looping
+            loopTriangle1.style.display = "none";
+            loopTriangle2.style.display = "none";
+            loopStart = 0;
+            loopEnd = currentSong.duration;
+        }
+    });
+
+    function setTrianglePosition(triangle, percent) {
+        triangle.style.left = `${percent}%`;
+    }
+
+    function getSeekbarPosition(event, seekbar) {
+        return (event.clientX - seekbar.getBoundingClientRect().left) / seekbar.offsetWidth * 100;
+    }
+
+    // Add drag functionality to triangles
+    [loopTriangle1, loopTriangle2].forEach(triangle => {
+        triangle.addEventListener("mousedown", () => {
+            function onMouseMove(e) {
+                let percent = getSeekbarPosition(e, document.querySelector(".seekbar"));
+                if (triangle === loopTriangle1) {
+                    loopStart = (percent / 100) * currentSong.duration;
+                    if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
+                } else {
+                    loopEnd = (percent / 100) * currentSong.duration;
+                    if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
+                }
+            }
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener("mousemove", onMouseMove);
+            }, { once: true });
+        });
+    });
+
+    
+
+    // Handle next button (exit loop if clicked)
+    document.getElementById("next").addEventListener("click", () => {
+        isLooping = false;
+        loopTriangle1.style.display = "none";
+        loopTriangle2.style.display = "none";
+        currentSong.currentTime = 0; // Start the next song normally
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    
+    // loop concept ends here
+    // loop concept ends here
+    // loop concept ends here
+    // loop concept ends here
+    // loop concept ends here
 }
 
 

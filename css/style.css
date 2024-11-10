@@ -333,25 +333,35 @@ body{
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
-    font-weight: bold;
+    /* font-weight: bold; */
+    background-color: #000000;
+    color: #ffffff;
+    transition :all 0.2s;
 }
+
+
+
+
 
 /* Loop marker styles */
 .loop-marker {
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     position: absolute;
-    bottom: -3px;
+    bottom: 4px;
     cursor: pointer;
+    transform: rotate(60deg);
     display: none; /* Hidden by default */
 }
 
 #loop-triangle1 {
     left: 0%; /* Positioned at the start */
+    position: absolute; /* Ensure the position is absolute */
 }
 
 #loop-triangle2 {
     right: 0%; /* Positioned at the end */
+    position: absolute; /* Ensure the position is absolute */
 }
 /* looping ends here */
 

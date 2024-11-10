@@ -1,1 +1,15 @@
+CAN FIND THE FILE IN THE link
+https://jvspotify.freewebhostmost.com/
+
+
+
 - mute button issue solved
+
+
+
+- script.js is the file which is uploaded in the webhostmost
+
+- scriptlocal.js is used for local testing in the index.html file
+
+
+- 

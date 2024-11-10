@@ -104,6 +104,9 @@ const playMusic = (track, pause = false) => {
 }
 
 
+
+
+
 async function displayAlbums() {
     let a = await fetch(`http://127.0.0.1:3000/songs/`)
     let response = await a.text();
@@ -162,25 +165,14 @@ async function main() {
 
     // Get the list of all the songs
     await getSongs("songs/ncs")
-    playMusic(songs[0])
+    playMusic(songs[0], true)
 
 
     // display all the albums on the page
     displayAlbums()
 
 
-    // playbutton play pause functionality
-    // attach an event listner to play & pause
-    play.addEventListener("click", () => {
-        if (currentSong.paused) {
-            currentSong.play();
-            play.src = "img/pause.svg";
-        }
-        else {
-            currentSong.pause();
-            play.src = "img/play.svg";
-        }
-    })
+
 
 
 
@@ -220,42 +212,7 @@ async function main() {
         document.querySelector(".left").style.left = "-125%";
     })
 
-    // add event listeners for previous
-    previous.addEventListener("click", () => {
-        currentSong.pause();
-        console.log("previous clicked");
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
-        if (index - 1 >= 0) {
-
-            // to play the previouz song when tapped
-            playMusic(songs[index - 1]);
-        }
-        else{
-            // If it's the first song, loop back to the last song
-            playMusic(songs[songs.length -1 ]);
-        }
-    })
-
-    // add event listeners for next
-    next.addEventListener("click", () => {
-        currentSong.pause();
-        console.log("next clicked");
-
-
-        // knowing the index of the present song
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
-
-        if (index + 1 < songs.length) {
-
-            // to play the next song when tapped
-            playMusic(songs[index + 1]);
-        }
-
-        else{
-            // If it's the last song, loop back to the first song
-            playMusic(songs[0]);
-        }
-    })
+    
 
     // Add an event to volume
     document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
@@ -299,13 +256,13 @@ async function main() {
 
 
 
-
-    // loop concept starts here
-    // loop concept starts here
-    // loop concept starts here
-    // loop concept starts here
-    
-
+// loop concept starts here
+// loop concept starts here
+// loop concept starts here
+// loop concept starts here
+// loop concept starts here
+// loop concept starts here
+// loop concept starts here
 
 
 
@@ -314,56 +271,140 @@ async function main() {
     const loopTriangle2 = document.getElementById("loop-triangle2");
     let isLooping = false;
     let loopStart = 0;
+    let isPlaying = false;
     let loopEnd = currentSong.duration || 0;
+
+    
 
     // Show triangles and allow dragging
     loopButton.addEventListener("click", () => {
-        isLooping = !isLooping; //looping becomes true now
 
 
-        document.querySelector(".songbuttons").innerHTML = 
-        `
-        <img width="35" id="previous" src="img/prevsong.svg" alt="">
-        <img width="35" id="play1" src="img/play.svg" alt="">
-        <img width="35" id="next" src="img/nextsong.svg" alt="">
-        `
+        // styling loop button
+        loopButton.style.padding = "5px 10px";
+        loopButton.style.border = "none";
+        loopButton.style.borderRadius = "3px";
+        loopButton.style.fontWeight = "bold";
+        loopButton.style.backgroundColor = "#fffefe";
+        loopButton.style.color = "#000000";
+        loopButton.style.transition = "all 0.2s";
 
-        // Play button logic to handle loop
-    document.getElementById("play1").addEventListener("click", () => {
-        if (!isLooping) {
-            currentSong.play();
-            play.src = "img/pause.svg";
-        } else {
-            // Play from loop start and loop within the selected range
-            currentSong.currentTime = loopStart;
-            currentSong.play();
-            play.src = "img/pause.svg";
+        // isLooping = !isLooping; //looping becomes true now
 
-            currentSong.addEventListener("timeupdate", () => {
-                if (currentSong.currentTime >= loopEnd) {
-                    currentSong.currentTime = loopStart;
-                }
-            });
-        }
-    });
-
-        if (isLooping) {
+        if(isLooping == false)
+        {
+            // enable looping feature
+            isLooping = true;
+            
+            currentSong.pause();
+            isPlaying = false;
+            
             // Show the triangles and set to seekbar boundaries
             loopTriangle1.style.display = "block";
             loopTriangle2.style.display = "block";
             loopStart = 0;
             loopEnd = currentSong.duration || 0;
-            currentSong.pause();
-            play1.src = "img/play.svg";
-        } else {
-            // Hide triangles and reset looping
-            loopTriangle1.style.display = "none";
-            loopTriangle2.style.display = "none";
-            loopStart = 0;
-            loopEnd = currentSong.duration;
+            
+                
+            
+            const loopButton = document.querySelector(".loop-button");
+            const playButton = document.querySelector("#play");
+            if (playButton.id === "play") {
+                playButton.id = "play1";  // Change the id to 'play1'
+            }
+
+            const play1 = document.getElementById("play1");
+
+            // song stopped so the iamge also is of stop
+            play1.src = "img/play.svg"
+            
+            // Play button logic to handle loop
+            play1.addEventListener("click", () => {
+                if (isLooping == true) {
+                    
+                    // looping enabled
+                    //song is not played yet , now you will play
+                    if(isPlaying == false)
+                        {
+                            isPlaying = true;
+                            // Play from loop start and loop within the selected range
+                            currentSong.currentTime = loopStart;
+                            currentSong.play();
+                            play1.src = "img/pause.svg";
+                            
+                            currentSong.addEventListener("timeupdate", () => {
+                                if (currentSong.currentTime >= loopEnd) {
+                                    currentSong.currentTime = loopStart;
+                                }
+                            });
+                        }
+                        else if(isPlaying == true)
+                            {
+                                isPlaying = false;
+                                currentSong.pause();
+                                play1.src = "img/play.svg";
+                            }
+                        }
+                    });
+            
+        } //if(isLooping == false) //ENDED HERE
+        
+        // is islooping is enabled, now disable it
+        else if(isLooping == true) {
+
+            
+            loopButton.style.padding = "5px 10px";
+            loopButton.style.border = "none";
+            loopButton.style.borderRadius = "3px";
+            loopButton.style.fontWeight = "normal";
+            loopButton.style.backgroundColor = "#000000";
+            loopButton.style.color = "#ffffff";
+            loopButton.style.transition = "all 0.2s";
+            
+            
+
+            if(isPlaying==true || isPlaying==false)
+            {
+
+                isLooping = false;
+                currentSong.pause();
+                isPlaying = false;
+    
+                // Hide triangles and reset looping
+                loopTriangle1.style.display = "none";
+                loopTriangle2.style.display = "none";
+                loopStart = 0;
+                loopEnd = currentSong.duration;
+    
+                // REVERT THE DEFAULT POSITIONS OF THE TRIANGLE
+                loopTriangle1.style.left = "0%" ;
+                loopTriangle2.style.left = "99.5%" ;
+    
+    
+                //change the pause button to the normal id play....
+                const playButton = document.querySelector("#play1");
+                playButton.id = "play";  // REVERT THE CHANGE BUTTON TO 'play'
+    
+    
+                // playbutton play pause functionality
+                // attach an event listner to play & pause
+            }
         }
     });
 
+    // playbutton play pause functionality
+    // attach an event listner to play & pause
+    play.addEventListener("click", () => {
+        if (currentSong.paused) {
+            currentSong.play();
+            play.src = "img/pause.svg";
+        }
+        else {
+            currentSong.pause();
+            play.src = "img/play.svg";
+        }
+    })
+            
     function setTrianglePosition(triangle, percent) {
         triangle.style.left = `${percent}%`;
     }
@@ -372,35 +413,125 @@ async function main() {
         return (event.clientX - seekbar.getBoundingClientRect().left) / seekbar.offsetWidth * 100;
     }
 
-    // Add drag functionality to triangles
-    [loopTriangle1, loopTriangle2].forEach(triangle => {
-        triangle.addEventListener("mousedown", () => {
-            function onMouseMove(e) {
-                let percent = getSeekbarPosition(e, document.querySelector(".seekbar"));
-                if (triangle === loopTriangle1) {
-                    loopStart = (percent / 100) * currentSong.duration;
-                    if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
-                } else {
-                    loopEnd = (percent / 100) * currentSong.duration;
-                    if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
-                }
-            }
+    // // Add drag functionality to triangles
+    // [loopTriangle1, loopTriangle2].forEach(triangle => {
+    //     triangle.addEventListener("mousedown", () => {
+    //         function onMouseMove(e) {
+    //             let percent = getSeekbarPosition(e, document.querySelector(".seekbar"));
+    //             if (triangle === loopTriangle1) {
+    //                 loopStart = (percent / 100) * currentSong.duration;
+    //                 if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
+    //             } else {
+    //                 loopEnd = (percent / 100) * currentSong.duration;
+    //                 if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
+    //             }
+    //         }
 
-            document.addEventListener("mousemove", onMouseMove);
+    //         document.addEventListener("mousemove", onMouseMove);
+    //         document.addEventListener("mouseup", () => {
+    //             document.removeEventListener("mousemove", onMouseMove);
+    //         }, { once: true });
+    //     });
+    // });
+
+    
+    [loopTriangle1, loopTriangle2].forEach(triangle => {
+        function onMove(e) {
+            const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+            let percent = (clientX - document.querySelector(".seekbar").getBoundingClientRect().left) / document.querySelector(".seekbar").offsetWidth * 100;
+            
+            if (triangle === loopTriangle1) {
+                loopStart = (percent / 100) * currentSong.duration;
+                if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
+            } else {
+                loopEnd = (percent / 100) * currentSong.duration;
+                if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
+            }
+        }
+    
+        triangle.addEventListener("mousedown", () => {
+            document.addEventListener("mousemove", onMove);z
             document.addEventListener("mouseup", () => {
-                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mousemove", onMove);
+            }, { once: true });
+        });
+    
+        triangle.addEventListener("touchstart", () => {
+            document.addEventListener("touchmove", onMove);
+            document.addEventListener("touchend", () => {
+                document.removeEventListener("touchmove", onMove);
             }, { once: true });
         });
     });
+    
+    
 
     
 
-    // Handle next button (exit loop if clicked)
-    document.getElementById("next").addEventListener("click", () => {
-        isLooping = false;
-        loopTriangle1.style.display = "none";
-        loopTriangle2.style.display = "none";
-        currentSong.currentTime = 0; // Start the next song normally
+
+
+    // add event listeners for previous LOOP LOGIC ALSO KEPT HERE
+    previous.addEventListener("click", () => {
+
+        if(isLooping == true)
+        {
+            loopButton.click();
+            // isLooping = false;
+            // loopTriangle1.style.display = "none";
+            // loopTriangle2.style.display = "none";
+            // currentSong.currentTime = 0; // Start the prev song normally
+        }
+
+        currentSong.pause();
+        console.log("previous clicked");
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+        if (index - 1 >= 0) {
+
+            // to play the previouz song when tapped
+            playMusic(songs[index - 1]);
+        }
+        else{
+            // If it's the first song, loop back to the last song
+            playMusic(songs[songs.length -1 ]);
+        }
+    })
+
+    // add event listeners for next
+    next.addEventListener("click", () => {
+
+        if(isLooping == true)
+        {
+            loopButton.click();
+            // isLooping = false;
+            // loopTriangle1.style.display = "none";
+            // loopTriangle2.style.display = "none";
+            // currentSong.currentTime = 0; // Start the next song normally
+        }
+        currentSong.pause();
+        console.log("next clicked");
+
+
+        // knowing the index of the present song
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+
+        if (index + 1 < songs.length) {
+
+            // to play the next song when tapped
+            playMusic(songs[index + 1]);
+        }
+
+        else{
+            // If it's the last song, loop back to the first song
+            playMusic(songs[0]);
+        }
+    })
+
+
+    currentSong.addEventListener("ended", () => {
+        console.log("Song ended, moving to next song...");
+        
+        // Simulate the next button click
+        next.click();
     });
 
 
@@ -411,13 +542,6 @@ async function main() {
 
 
 
-
-
-
-
-
-
-
     
 
 
@@ -432,7 +556,17 @@ async function main() {
     // loop concept ends here
     // loop concept ends here
     // loop concept ends here
+
+
+
+// loop concept ends here
+// loop concept ends here
+// loop concept ends here
+// loop concept ends here
+// loop concept ends here
+
 }
+
 
 
 

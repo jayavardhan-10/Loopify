@@ -1,8 +1,5 @@
-//scriptlocal 8
-// or script8.js was uploaded
 // UPDATE FROM 6
 // POINT NO 7 RESOLVED
-
 
 
 // VOLUME AND MUTE ICON ISSUE SOLVED
@@ -60,7 +57,7 @@ async function getSongs(folder) {
     console.log("Fetching songs from folder:", folder);  // Log the folder
 
     currfolder = folder;
-    let a = await fetch(`/${folder}/`)
+    let a = await fetch(`http://127.0.0.1:3000/${folder}/`)
     // let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/`)
     let response = await a.text();
     console.log("Response from server:", response);  // Log the response
@@ -158,7 +155,7 @@ const playMusic = (track, pause = false) => {
 
 
 async function displayAlbums() {
-    let a = await fetch(`/songs/`)
+    let a = await fetch(`http://127.0.0.1:3000/songs/`)
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -173,7 +170,7 @@ async function displayAlbums() {
         let folder = (e.href.split("/").slice(-2)[0]);
 
         // get the metadata of the folder
-        let a = await fetch(`/songs/${folder}/info.json`)
+        let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`)
         let response = await a.json();
         console.log(response);
         cardContainer.innerHTML = cardContainer.innerHTML + 
@@ -277,6 +274,7 @@ async function main() {
     document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
         // console.log("setting volume to ", e.target.value);
         currentSong.volume = parseInt(e.target.value) / 100;
+
         const volumeIcon = document.querySelector(".volume>img");
         if (currentSong.volume > 0)
             {
@@ -369,7 +367,7 @@ async function main() {
         } else {
             disableLoop();
             loopStart = 0;
-            loopEnd = currentSong.duration;
+            loopEnd = currentSong.duration; 
         }
     });
     

@@ -4,7 +4,6 @@
 // POINT NO 7 RESOLVED
 
 
-
 // VOLUME AND MUTE ICON ISSUE SOLVED
 // disable loop function added
 // library things not yet solved
@@ -24,7 +23,6 @@
 // 6. when looping turn on , next and prev behaving right
 // 7. WHILE SONG PLAYING IN LOOP, IF LOOP BUTTON IS TURNED OFF BOUNDARIES ARE CHANGING STAYING SAME AS LOOP , TRAINGLES FADING AWAY ITS FINE (point 7 is fine now)
 // 8. VOLUME AND MUTE ICON ISSUE SOLVED
-
 
 console.log("lets write java script");
 // keeping this current song global to assuer that only 1 plays at a time
@@ -368,8 +366,6 @@ async function main() {
             playButton.src = "img/play.svg";
         } else {
             disableLoop();
-            loopStart = 0;
-            loopEnd = currentSong.duration;
         }
     });
     

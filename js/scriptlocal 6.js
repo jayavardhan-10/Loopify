@@ -1,11 +1,3 @@
-//scriptlocal 8
-// or script8.js was uploaded
-// UPDATE FROM 6
-// POINT NO 7 RESOLVED
-
-
-
-// VOLUME AND MUTE ICON ISSUE SOLVED
 // disable loop function added
 // library things not yet solved
 
@@ -22,8 +14,8 @@
 // 4. triangles cant go over each other
 // 5. while looping on, if i tap on another song in library, looping turns off 
 // 6. when looping turn on , next and prev behaving right
-// 7. WHILE SONG PLAYING IN LOOP, IF LOOP BUTTON IS TURNED OFF BOUNDARIES ARE CHANGING STAYING SAME AS LOOP , TRAINGLES FADING AWAY ITS FINE (point 7 is fine now)
-// 8. VOLUME AND MUTE ICON ISSUE SOLVED
+// 7. WHILE SONG PLAYING IN LOOP, IF LOOP BUTTON IS TURNED OFF BOUNDARIES NOT CHANGING STAYING SAME AS LOOP , TRAINGLES FADING AWAY ITS FINE
+// 
 
 
 console.log("lets write java script");
@@ -60,7 +52,7 @@ async function getSongs(folder) {
     console.log("Fetching songs from folder:", folder);  // Log the folder
 
     currfolder = folder;
-    let a = await fetch(`/${folder}/`)
+    let a = await fetch(`http://127.0.0.1:3000/${folder}/`)
     // let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/`)
     let response = await a.text();
     console.log("Response from server:", response);  // Log the response
@@ -158,7 +150,7 @@ const playMusic = (track, pause = false) => {
 
 
 async function displayAlbums() {
-    let a = await fetch(`/songs/`)
+    let a = await fetch(`http://127.0.0.1:3000/songs/`)
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -173,7 +165,7 @@ async function displayAlbums() {
         let folder = (e.href.split("/").slice(-2)[0]);
 
         // get the metadata of the folder
-        let a = await fetch(`/songs/${folder}/info.json`)
+        let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`)
         let response = await a.json();
         console.log(response);
         cardContainer.innerHTML = cardContainer.innerHTML + 
@@ -277,20 +269,10 @@ async function main() {
     document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
         // console.log("setting volume to ", e.target.value);
         currentSong.volume = parseInt(e.target.value) / 100;
-        const volumeIcon = document.querySelector(".volume>img");
-        if (currentSong.volume > 0)
+        if(currentSong.volume > 0)
             {
-                volumeIcon.src = volumeIcon.src.replace("mute.svg", "volume.svg");
+                document.querySelector(".volume>img").target.src = document.querySelector(".volume>img").src.replace("mute.svg", "volume.svg");
             }
-            else
-            {
-                volumeIcon.src = volumeIcon.src.replace("volume.svg", "mute.svg");
-            }
-
-        // if(currentSong.volume > 0)
-        //     {
-        //         document.querySelector(".volume>img").target.src = document.querySelector(".volume>img").src.replace("mute.svg", "volume.svg");
-        //     }
         })
         
 
@@ -368,8 +350,6 @@ async function main() {
             playButton.src = "img/play.svg";
         } else {
             disableLoop();
-            loopStart = 0;
-            loopEnd = currentSong.duration;
         }
     });
     

@@ -1,3 +1,11 @@
+// when tapping on other albums looping turning off but button not turning off
+
+
+
+
+
+
+
 console.log("lets write java scripr");
 // keeping this current song global to assuer that only 1 plays at a time
 let currentSong = new Audio();
@@ -79,6 +87,10 @@ async function getSongs(folder) {
     // attach an event listner to each song
     Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e => {
         e.addEventListener("click", element => {
+            // looping shall be stopped if it is there
+            // zzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+            isLooping = false;
+            currentSong.loop = false;
             playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim())
             //trim to remove the sapces if any in the beginning
         })
@@ -92,6 +104,10 @@ async function getSongs(folder) {
 
 const playMusic = (track, pause = false) => {
     console.log("Playing track:", track);  // Log the track name
+    // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+    isLooping = false;
+    currentSong.loop = false
+
 
     currentSong.src = `/${currfolder}/` + track
     if (!pause) {
@@ -149,6 +165,10 @@ async function displayAlbums() {
     // load the playlist whenever card is clicked
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
+            // looping shall be stopped, if it is on
+            isLooping = false;
+            currentSong.loop = false;
+            // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
             console.log("Fetching song");
             songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
             playMusic(songs[0]);
@@ -256,314 +276,179 @@ async function main() {
 
 
 
-// loop concept starts here
-// loop concept starts here
-// loop concept starts here
-// loop concept starts here
-// loop concept starts here
-// loop concept starts here
-// loop concept starts here
-
-
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // loop concept starts here
+    // Loop concept starts here
 
     const loopButton = document.querySelector(".loop-button");
     const loopTriangle1 = document.getElementById("loop-triangle1");
     const loopTriangle2 = document.getElementById("loop-triangle2");
+    const playButton = document.getElementById("play"); // Keep id consistent
     let isLooping = false;
-    let loopStart = 0;
     let isPlaying = false;
-    let loopEnd = currentSong.duration || 0;
+    let loopStart = 0;
+    let loopEnd = 0;
 
-    
+    // Initialize the loop range on song load
+    currentSong.addEventListener("loadedmetadata", () => {
+        loopEnd = currentSong.duration;
+    });
 
-    // Show triangles and allow dragging
+    // Styling and toggling the loop button
     loopButton.addEventListener("click", () => {
+        isLooping = !isLooping;
 
+        if (isLooping) {
+            // Enable looping feature
+            loopButton.style.backgroundColor = "#fffefe";
+            loopButton.style.color = "#000000";
 
-        // styling loop button
-        loopButton.style.padding = "5px 10px";
-        loopButton.style.border = "none";
-        loopButton.style.borderRadius = "3px";
-        loopButton.style.fontWeight = "bold";
-        loopButton.style.backgroundColor = "#fffefe";
-        loopButton.style.color = "#000000";
-        loopButton.style.transition = "all 0.2s";
-
-        // isLooping = !isLooping; //looping becomes true now
-
-        if(isLooping == false)
-        {
-            // enable looping feature
-            isLooping = true;
-            
             currentSong.pause();
             isPlaying = false;
-            
-            // Show the triangles and set to seekbar boundaries
+
             loopTriangle1.style.display = "block";
             loopTriangle2.style.display = "block";
             loopStart = 0;
             loopEnd = currentSong.duration || 0;
-            
-                
-            
-            const loopButton = document.querySelector(".loop-button");
-            const playButton = document.querySelector("#play");
-            if (playButton.id === "play") {
-                playButton.id = "play1";  // Change the id to 'play1'
-            }
 
-            const play1 = document.getElementById("play1");
-
-            // song stopped so the iamge also is of stop
-            play1.src = "img/play.svg"
-            
-            // Play button logic to handle loop
-            play1.addEventListener("click", () => {
-                if (isLooping == true) {
-                    
-                    // looping enabled
-                    //song is not played yet , now you will play
-                    if(isPlaying == false)
-                        {
-                            isPlaying = true;
-                            // Play from loop start and loop within the selected range
-                            currentSong.currentTime = loopStart;
-                            currentSong.play();
-                            play1.src = "img/pause.svg";
-                            
-                            currentSong.addEventListener("timeupdate", () => {
-                                if (currentSong.currentTime >= loopEnd) {
-                                    currentSong.currentTime = loopStart;
-                                }
-                            });
-                        }
-                        else if(isPlaying == true)
-                            {
-                                isPlaying = false;
-                                currentSong.pause();
-                                play1.src = "img/play.svg";
-                            }
-                        }
-                    });
-            
-        } //if(isLooping == false) //ENDED HERE
-        
-        // is islooping is enabled, now disable it
-        else if(isLooping == true) {
-
-            
-            loopButton.style.padding = "5px 10px";
-            loopButton.style.border = "none";
-            loopButton.style.borderRadius = "3px";
-            loopButton.style.fontWeight = "normal";
+            playButton.src = "img/play.svg";
+        } else {
+            // Disable looping feature
             loopButton.style.backgroundColor = "#000000";
             loopButton.style.color = "#ffffff";
-            loopButton.style.transition = "all 0.2s";
-            
-            
 
-            if(isPlaying==true || isPlaying==false)
-            {
+            isLooping = false;
+            currentSong.pause();
+            isPlaying = false;
 
-                isLooping = false;
-                currentSong.pause();
+            loopTriangle1.style.display = "none";
+            loopTriangle2.style.display = "none";
+            loopStart = 0;
+            loopEnd = currentSong.duration;
+
+            // Reset triangle positions
+            loopTriangle1.style.left = "0%";
+            loopTriangle2.style.left = "99.5%";
+        }
+    });
+
+    // Play button logic for loop
+    playButton.addEventListener("click", () => {
+        if (isLooping) {
+            if (!isPlaying) {
+                isPlaying = true;
+                currentSong.currentTime = loopStart;
+                currentSong.play();
+                playButton.src = "img/pause.svg";
+
+                currentSong.addEventListener("timeupdate", () => {
+                    if (currentSong.currentTime >= loopEnd) {
+                        currentSong.currentTime = loopStart;
+                    }
+                });
+            } else {
                 isPlaying = false;
-    
-                // Hide triangles and reset looping
-                loopTriangle1.style.display = "none";
-                loopTriangle2.style.display = "none";
-                loopStart = 0;
-                loopEnd = currentSong.duration;
-    
-                // REVERT THE DEFAULT POSITIONS OF THE TRIANGLE
-                loopTriangle1.style.left = "0%" ;
-                loopTriangle2.style.left = "99.5%" ;
-    
-    
-                //change the pause button to the normal id play....
-                const playButton = document.querySelector("#play1");
-                playButton.id = "play";  // REVERT THE CHANGE BUTTON TO 'play'
-    
-    
-                // playbutton play pause functionality
-                // attach an event listner to play & pause
+                currentSong.pause();
+                playButton.src = "img/play.svg";
+            }
+        } else {
+            if (currentSong.paused) {
+                currentSong.play();
+                playButton.src = "img/pause.svg";
+            } else {
+                currentSong.pause();
+                playButton.src = "img/play.svg";
             }
         }
     });
 
-    // playbutton play pause functionality
-    // attach an event listner to play & pause
-    play.addEventListener("click", () => {
-        if (currentSong.paused) {
-            currentSong.play();
-            play.src = "img/pause.svg";
+    // Triangle drag functionality
+    [loopTriangle1, loopTriangle2].forEach((triangle) => {
+        triangle.addEventListener("mousedown", startDragging);
+        triangle.addEventListener("touchstart", startDragging);
+
+        function startDragging(event) {
+            event.preventDefault();
+            const isTouch = event.type === "touchstart";
+            const moveEvent = isTouch ? "touchmove" : "mousemove";
+            const endEvent = isTouch ? "touchend" : "mouseup";
+
+            function onMove(e) {
+                const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+                let percent =
+                    ((clientX -
+                        document.querySelector(".seekbar").getBoundingClientRect().left) /
+                        document.querySelector(".seekbar").offsetWidth) *
+                    100;
+
+                percent = Math.max(0, Math.min(100, percent));
+
+                if (triangle === loopTriangle1) {
+                    loopStart = (percent / 100) * currentSong.duration;
+                    if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
+                } else {
+                    loopEnd = (percent / 100) * currentSong.duration;
+                    if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
+                }
+            }
+
+            function stopDragging() {
+                document.removeEventListener(moveEvent, onMove);
+                document.removeEventListener(endEvent, stopDragging);
+            }
+
+            document.addEventListener(moveEvent, onMove);
+            document.addEventListener(endEvent, stopDragging);
         }
-        else {
-            currentSong.pause();
-            play.src = "img/play.svg";
-        }
-    })
-            
+    });
+
     function setTrianglePosition(triangle, percent) {
         triangle.style.left = `${percent}%`;
     }
 
-    function getSeekbarPosition(event, seekbar) {
-        return (event.clientX - seekbar.getBoundingClientRect().left) / seekbar.offsetWidth * 100;
-    }
-
-    // // Add drag functionality to triangles
-    // [loopTriangle1, loopTriangle2].forEach(triangle => {
-    //     triangle.addEventListener("mousedown", () => {
-    //         function onMouseMove(e) {
-    //             let percent = getSeekbarPosition(e, document.querySelector(".seekbar"));
-    //             if (triangle === loopTriangle1) {
-    //                 loopStart = (percent / 100) * currentSong.duration;
-    //                 if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
-    //             } else {
-    //                 loopEnd = (percent / 100) * currentSong.duration;
-    //                 if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
-    //             }
-    //         }
-
-    //         document.addEventListener("mousemove", onMouseMove);
-    //         document.addEventListener("mouseup", () => {
-    //             document.removeEventListener("mousemove", onMouseMove);
-    //         }, { once: true });
-    //     });
-    // });
-
-    
-    [loopTriangle1, loopTriangle2].forEach(triangle => {
-        function onMove(e) {
-            const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
-            let percent = (clientX - document.querySelector(".seekbar").getBoundingClientRect().left) / document.querySelector(".seekbar").offsetWidth * 100;
-            
-            if (triangle === loopTriangle1) {
-                loopStart = (percent / 100) * currentSong.duration;
-                if (loopStart < loopEnd) setTrianglePosition(triangle, percent);
-            } else {
-                loopEnd = (percent / 100) * currentSong.duration;
-                if (loopEnd > loopStart) setTrianglePosition(triangle, percent);
-            }
-        }
-    
-        triangle.addEventListener("mousedown", () => {
-            document.addEventListener("mousemove", onMove);z
-            document.addEventListener("mouseup", () => {
-                document.removeEventListener("mousemove", onMove);
-            }, { once: true });
-        });
-    
-        triangle.addEventListener("touchstart", () => {
-            document.addEventListener("touchmove", onMove);
-            document.addEventListener("touchend", () => {
-                document.removeEventListener("touchmove", onMove);
-            }, { once: true });
-        });
-    });
-    
-    
-
-    
-
-
-
-    // add event listeners for previous LOOP LOGIC ALSO KEPT HERE
+    // Handle previous button click
     previous.addEventListener("click", () => {
-
-        if(isLooping == true)
-        {
-            loopButton.click();
-            // isLooping = false;
-            // loopTriangle1.style.display = "none";
-            // loopTriangle2.style.display = "none";
-            // currentSong.currentTime = 0; // Start the prev song normally
-        }
+        if (isLooping) loopButton.click();
 
         currentSong.pause();
-        console.log("previous clicked");
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
         if (index - 1 >= 0) {
-
-            // to play the previouz song when tapped
             playMusic(songs[index - 1]);
+        } else {
+            playMusic(songs[songs.length - 1]);
         }
-        else{
-            // If it's the first song, loop back to the last song
-            playMusic(songs[songs.length -1 ]);
-        }
-    })
+    });
 
-    // add event listeners for next
+    // Handle next button click
     next.addEventListener("click", () => {
+        if (isLooping) loopButton.click();
 
-        if(isLooping == true)
-        {
-            loopButton.click();
-            // isLooping = false;
-            // loopTriangle1.style.display = "none";
-            // loopTriangle2.style.display = "none";
-            // currentSong.currentTime = 0; // Start the next song normally
-        }
         currentSong.pause();
-        console.log("next clicked");
-
-
-        // knowing the index of the present song
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
-
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
         if (index + 1 < songs.length) {
-
-            // to play the next song when tapped
             playMusic(songs[index + 1]);
-        }
-
-        else{
-            // If it's the last song, loop back to the first song
+        } else {
             playMusic(songs[0]);
         }
-    })
+    });
 
-
+    // Automatically go to the next song on end
     currentSong.addEventListener("ended", () => {
-        console.log("Song ended, moving to next song...");
-        
-        // Simulate the next button click
         next.click();
     });
 
+    // Loop concept ends here
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-    
     // loop concept ends here
     // loop concept ends here
     // loop concept ends here
     // loop concept ends here
     // loop concept ends here
-
-
-
-// loop concept ends here
-// loop concept ends here
-// loop concept ends here
-// loop concept ends here
-// loop concept ends here
 
 }
 

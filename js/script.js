@@ -324,15 +324,7 @@ async function main() {
         
         
         
-        
-        // loop concept starts here
-        // loop concept starts here
-        // loop concept starts here
-        // loop concept starts here
-    // loop concept starts here
-    // loop concept starts here
-    // loop concept starts here
-    // Loop concept starts here
+
     
     const loopButton = document.querySelector(".loop-button");
     const loopTriangle1 = document.getElementById("loop-triangle1");
@@ -482,14 +474,7 @@ async function main() {
     currentSong.addEventListener("ended", () => {
         next.click();
     });
-    
-    // Loop concept ends here
-    
-    // loop concept ends here
-    // loop concept ends here
-    // loop concept ends here
-    // loop concept ends here
-    // loop concept ends here
+
     
 }
 

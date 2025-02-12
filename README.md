@@ -26,7 +26,6 @@ LOOPIFY isn't just another music player—it's a community-driven idea. The conc
 
 ## Tech Stack 🛠️
 - **Frontend:** HTML, CSS, JavaScript
-- **Backend:** N/A (Client-side project)
 - **Hosting:** FreeWebHostMost
 
 ## Get in Touch 📩

@@ -19,7 +19,7 @@ What sets LOOPIFY apart is its **advanced looping functionality**, allowing user
 ## Live Demo 🚀
 🎥 [Watch the Working Demo](https://youtu.be/N2fdIfELTks)
 
-🔗 [Try LOOPIFY Now](http://jvspotify.freewebhostmost.com)
+🔗 [Try LOOPIFY Now](https://loopify.space/)
 
 ## Community Contribution 🌍
 LOOPIFY isn't just another music player—it's a community-driven idea. The concept was submitted to the **Spotify Community** for potential integration. Stay tuned for updates!
